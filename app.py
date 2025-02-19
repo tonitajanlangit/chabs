@@ -92,14 +92,14 @@ st.markdown("""
             width: 180px;
             height: 40px;
             font-size: 14px;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
             text-align: center;
         }
         .button-container button:hover {
-            background-color: #7164fc;
+            background-color: #ff5733;
         }
         .selected-button {
             background-color: #ff5733;
@@ -140,16 +140,16 @@ st.markdown(
             width: 100%;
             padding: 10px;
             font-size: 14px;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
         }}
         .stButton > button:hover {{
-            background-color: #7164fc;
+            background-color: #ff5733;
         }}
         .stButton > button[selected] {{
-            background-color: #7164fc !important;
+            background-color: #ff5733 !important;
         }}
     </style>
     """,
