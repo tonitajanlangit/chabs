@@ -108,6 +108,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+import streamlit as st
+
 # Initialize session state if not set
 if "graph_selection" not in st.session_state:
     st.session_state.graph_selection = "Event Performance Overview"  # Default selection
@@ -135,34 +137,41 @@ with st.sidebar:
     # Update session state when selection changes
     st.session_state.graph_selection = selected_button
 
-# Apply styles for the selected button, and hide default radio circles
+# Apply CSS to style radio buttons as selectable buttons & hide the radio circles
 st.markdown(
     """
     <style>
-        /* Hide radio button circle */
+        /* Hide the default radio button circles */
         div[role="radiogroup"] div[data-testid="stRadio"] label span {
             display: none !important;
         }
 
-        /* Style the buttons */
+        /* Style the labels to look like buttons */
         div[role="radiogroup"] label {
             display: block;
             width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 5px;
-            background-color: #fc6c64;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: #fc6c64; /* Default color */
             color: white;
             cursor: pointer;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             text-align: center;
-            border: none;
+            font-weight: bold;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
         }
+
+        /* Hover effect */
         div[role="radiogroup"] label:hover {
             background-color: #ff5733;
         }
+
+        /* Highlight the selected button */
         div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
             background-color: #ff5733 !important;
+            border: 2px solid #388E3C !important;
             font-weight: bold;
         }
     </style>
@@ -172,6 +181,7 @@ st.markdown(
 
 # Display the selected visualization
 st.write(f"### Selected View: {st.session_state.graph_selection}")
+
 
 
 if event_category != "All":
