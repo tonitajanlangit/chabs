@@ -171,14 +171,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Create buttons with dynamic styling
-for button in buttons:
-    button_class = "active-button" if st.session_state.active_button == button else ""
-    
-    if st.markdown(f'<div class="{button_class}">', unsafe_allow_html=True):
-        if st.button(button, on_click=set_active_button, args=(button,)):
-            pass  # This is just for triggering the UI update
-
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
