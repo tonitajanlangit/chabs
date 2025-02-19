@@ -32,12 +32,12 @@ st.set_page_config(
 # Custom Altair color scheme
 PRIMARY_COLOR = "#fc6c64"  # Coral Red
 WHITE = "#ffffff"  # White
-COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"]  # Chart colors
-PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"]  # For variation
+COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"] # Chart colors
+PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"] # For variation
 
 # Load PopIn dataset
-# df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')  # Replace with your actual file path
-# df_popin.columns = df_popin.columns.str.replace(' ', '_')
+df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')
+df_popin.columns = df_popin.columns.str.replace(' ', '_')
 
 def custom_theme():
     return {
@@ -63,14 +63,55 @@ def apply_custom_styles():
         """,
         unsafe_allow_html=True
     )
-
 apply_custom_styles()
+
+def apply_custom_styles():
+    st.markdown(
+        f"""
+        <style>
+            .main {{ background-color: white; }}
+            [data-testid="stSidebar"] {{ background-color: {PRIMARY_COLOR}; }}
+            h1, h2, h3, h4, h5, h6, p, label {{ color: black !important; }}
+            div[data-testid="stMetric"] {{ background-color: {PRIMARY_COLOR}; padding: 10px; border-radius: 10px; color: white; text-align: center; }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+apply_custom_styles()
+
+st.markdown("""
+    <style>
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .button-container button {
+            width: 180px;
+            height: 40px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #fc6c64;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+        }
+        .button-container button:hover {
+            background-color: #ff5733;
+        }
+        .selected-button {
+            background-color: #ff5733 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Sidebar navigation buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
-    # event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"]) # If you uncomment this, ensure df_popin is loaded
-
+    event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
+    
     st.subheader("Select Visualization")
     event_buttons = [
         "Event Performance Overview",
@@ -81,18 +122,17 @@ with st.sidebar:
         "Event Location Insights",
         "Word Cloud"
     ]
-
+    
     # Initialize session state for button selection
     if 'graph_selection' not in st.session_state:
         st.session_state.graph_selection = event_buttons[0]
-
+    
     # Create buttons with persistent selection state
     for button in event_buttons:
-        if st.button(button, key=button):  # Key is crucial for state management
+        if st.button(button, key=button):
             st.session_state.graph_selection = button
 
-
-# Apply custom CSS to highlight the selected button
+# Apply styles to highlight selected button
 st.markdown(
     f"""
     <style>
@@ -100,63 +140,24 @@ st.markdown(
             width: 100%;
             padding: 10px;
             font-size: 14px;
-            border-radius: 10px;
-            background-color: #fc6c64; /* Default background color */
+            border-radius: 5px;
+            background-color: #fc6c64;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s; /* Smooth transition */
         }}
-
         .stButton > button:hover {{
-            background-color: #ff5733; /* Hover background color */
+            background-color: #ff5733;
         }}
-
-        .stButton > button[data-selected="true"] {{
-            background-color: #ff5733 !important; /* Selected background color */
+        .stButton > button[selected] {{
+            background-color: #ff5733 !important;
         }}
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Add a script to update the button's data-selected attribute
-st.markdown(
-    f"""
-    <script>
-        function updateSelectedButton() {{
-            const buttons = document.querySelectorAll('.stButton > button');
-            buttons.forEach(button => {{
-                if (button.innerText === "{st.session_state.graph_selection}") {{
-                    button.setAttribute('data-selected', 'true');
-                }} else {{
-                    button.setAttribute('data-selected', 'false');
-                }}
-            }});
-        }}
-
-        // Call initially to set correct state on load
-        updateSelectedButton();
-
-        // Call after any Streamlit update (crucial!)
-        Streamlit.events.addEventListener(Streamlit.EVENT_RENDER, updateSelectedButton);
-
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
-
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
-
-# Placeholder for your visualizations.  Replace with your charting code
-if st.session_state.graph_selection == "Event Performance Overview":
-    st.write("Event Performance Overview content goes here")
-elif st.session_state.graph_selection == "Category Analysis":
-    st.write("Category Analysis content goes here")
-# ... (Add other conditions for your visualizations)
-
-   
 
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
@@ -544,7 +545,8 @@ category_colors = {
 
 
   #WORD CLOUD HERE
-if st.session_state.graph_selection == "Word Cloud":  # Access graph_selection from session state
+
+if graph_selection == "Word Cloud":
     st.subheader("🗣 Word Cloud")
 
     text_data = ' '.join(df_popin['Event_Name'].dropna())
@@ -559,4 +561,4 @@ if st.session_state.graph_selection == "Word Cloud":  # Access graph_selection f
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
-    st.pyplot(plt)
+    st.pyplot(plt)
