@@ -160,8 +160,13 @@ st.markdown(
     <script>
         function updateSelectedButton() {{
             const buttons = document.querySelectorAll('.stButton > button');
+            const targetText = "{st.session_state.graph_selection}"; // Store target text
+
             buttons.forEach(button => {{
-                if (button.innerText === "{st.session_state.graph_selection}") {{
+                // Get the *immediate child* span's text content (important!)
+                const buttonText = button.querySelector('span').textContent; 
+
+                if (buttonText === targetText) {{
                     button.setAttribute('data-selected', 'true');
                 }} else {{
                     button.setAttribute('data-selected', 'false');
@@ -169,16 +174,12 @@ st.markdown(
             }});
         }}
 
-        // Initial call to set the correct state on load
         updateSelectedButton();
-
-        // Call after every Streamlit render (essential!)
         Streamlit.events.addEventListener(Streamlit.EVENT_RENDER, updateSelectedButton);
     </script>
     """,
     unsafe_allow_html=True
 )
-
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
