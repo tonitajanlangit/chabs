@@ -99,10 +99,10 @@ st.markdown("""
             text-align: center;
         }
         .button-container button:hover {
-            background-color: #ff5733;
+            background-color: #7164fc;
         }
         .selected-button {
-            background-color: #ff5733;
+            background-color: #7164fc;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -146,10 +146,10 @@ st.markdown(
             cursor: pointer;
         }}
         .stButton > button:hover {{
-            background-color: #ff5733;
+            background-color: #7164fc;
         }}
         .stButton > button[selected] {{
-            background-color: #ff5733 !important;
+            background-color: #7164fc !important;
         }}
     </style>
     """,
