@@ -28,9 +28,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-import pandas as pd
-import streamlit as st
-import altair as alt
 
 # Custom Altair color scheme
 PRIMARY_COLOR = "#fc6c64"  # Coral Red
@@ -39,8 +36,8 @@ COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"]  # Chart colors
 PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"]  # For variation
 
 # Load PopIn dataset
-df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')
-df_popin.columns = df_popin.columns.str.replace(' ', '_')
+# df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')  # Replace with your actual file path
+# df_popin.columns = df_popin.columns.str.replace(' ', '_')
 
 def custom_theme():
     return {
@@ -72,7 +69,7 @@ apply_custom_styles()
 # Sidebar navigation buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
-    event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
+    # event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"]) # If you uncomment this, ensure df_popin is loaded
 
     st.subheader("Select Visualization")
     event_buttons = [
@@ -91,8 +88,9 @@ with st.sidebar:
 
     # Create buttons with persistent selection state
     for button in event_buttons:
-        if st.button(button, key=button):
+        if st.button(button, key=button):  # Key is crucial for state management
             st.session_state.graph_selection = button
+
 
 # Apply custom CSS to highlight the selected button
 st.markdown(
@@ -103,16 +101,18 @@ st.markdown(
             padding: 10px;
             font-size: 14px;
             border-radius: 10px;
-            background-color: #fc6c64;
+            background-color: #fc6c64; /* Default background color */
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s; /* Smooth transition */
         }}
+
         .stButton > button:hover {{
-            background-color: #ff5733;
+            background-color: #ff5733; /* Hover background color */
         }}
+
         .stButton > button[data-selected="true"] {{
-            background-color: #ff5733 !important;
+            background-color: #ff5733 !important; /* Selected background color */
         }}
     </style>
     """,
@@ -123,7 +123,7 @@ st.markdown(
 st.markdown(
     f"""
     <script>
-        document.addEventListener('DOMContentLoaded', function() {{
+        function updateSelectedButton() {{
             const buttons = document.querySelectorAll('.stButton > button');
             buttons.forEach(button => {{
                 if (button.innerText === "{st.session_state.graph_selection}") {{
@@ -132,14 +132,29 @@ st.markdown(
                     button.setAttribute('data-selected', 'false');
                 }}
             }});
-        }});
+        }}
+
+        // Call initially to set correct state on load
+        updateSelectedButton();
+
+        // Call after any Streamlit update (crucial!)
+        Streamlit.events.addEventListener(Streamlit.EVENT_RENDER, updateSelectedButton);
+
     </script>
     """,
     unsafe_allow_html=True
 )
 
+
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
+
+# Placeholder for your visualizations.  Replace with your charting code
+if st.session_state.graph_selection == "Event Performance Overview":
+    st.write("Event Performance Overview content goes here")
+elif st.session_state.graph_selection == "Category Analysis":
+    st.write("Category Analysis content goes here")
+# ... (Add other conditions for your visualizations)
 
    
 
