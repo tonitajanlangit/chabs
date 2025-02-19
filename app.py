@@ -107,6 +107,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
+# Initialize session state if not set
+if "graph_selection" not in st.session_state:
+    st.session_state.graph_selection = "Event Performance Overview"  # Default selection
+
 # Sidebar navigation
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
@@ -124,8 +129,11 @@ with st.sidebar:
         "Word Cloud"
     ]
 
-    # Use radio buttons with label_visibility hidden
-    selected_button = st.radio("Choose Analysis", event_buttons, index=0, label_visibility="collapsed")
+    # Use radio buttons with persistent selection
+    selected_button = st.radio("Choose Analysis", event_buttons, index=event_buttons.index(st.session_state.graph_selection), label_visibility="collapsed")
+
+    # Update session state when selection changes
+    st.session_state.graph_selection = selected_button
 
 # Apply styles for the selected button, and hide default radio circles
 st.markdown(
@@ -133,7 +141,7 @@ st.markdown(
     <style>
         /* Hide radio button circle */
         div[role="radiogroup"] div[data-testid="stRadio"] label span {
-            display: none;
+            display: none !important;
         }
 
         /* Style the buttons */
@@ -163,7 +171,7 @@ st.markdown(
 )
 
 # Display the selected visualization
-st.write(f"### Selected View: {selected_button}")
+st.write(f"### Selected View: {st.session_state.graph_selection}")
 
 
 if event_category != "All":
