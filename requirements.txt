@@ -10,3 +10,4 @@ plotly
 nltk
 googlemaps
 wordcloud
+scikit-learn
