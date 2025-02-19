@@ -146,15 +146,15 @@ st.markdown(
             display: none !important;
         }
 
-        /* Make labels look like buttons */
+        # Make labels look like buttons
         div[data-testid="stRadio"] div[role="radiogroup"] label {
-            display: block;
+            display: flex;
             width: 100%;
             height: 50px;
             padding: 12px;
             font-size: 16px;
             border-radius: 8px;
-            background-color: #fc6c64; /* Default button color */
+            background-color: #fc6c64;
             color: white;
             cursor: pointer;
             margin-bottom: 8px;
