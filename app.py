@@ -107,11 +107,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+import streamlit as st
+
 # Sidebar navigation buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
-    
+
     st.subheader("Select Visualization")
     event_buttons = [
         "Event Performance Overview",
@@ -122,17 +124,17 @@ with st.sidebar:
         "Event Location Insights",
         "Word Cloud"
     ]
-    
-    # Initialize session state for button selection
-    if 'graph_selection' not in st.session_state:
-        st.session_state.graph_selection = event_buttons[0]
-    
-    # Create buttons with persistent selection state
+
+    # Initialize session state if not set
+    if 'selected_button' not in st.session_state:
+        st.session_state.selected_button = event_buttons[0]  # Default selected button
+
+    # Generate buttons with state tracking
     for button in event_buttons:
         if st.button(button, key=button):
-            st.session_state.graph_selection = button
+            st.session_state.selected_button = button  # Update session state
 
-# Apply styles to highlight selected button
+# Apply CSS for button styling
 st.markdown(
     f"""
     <style>
@@ -144,36 +146,38 @@ st.markdown(
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
+            margin-bottom: 5px;
+            border: none;
         }}
         .stButton > button:hover {{
             background-color: #ff5733;
         }}
-        .stButton > button:selected {{
-            background-color: #ff5733;
+        .stButton > button:focus {{
+            outline: none;
         }}
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Apply CSS styles for button highlighting
-st.markdown("""
-    <style>
-        .stButton>button {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        .active-button {
-            background-color: #4CAF50 !important;  /* Green highlight */
-            color: white !important;
-            font-weight: bold;
-        }
-    </style>
-""", unsafe_allow_html=True)
+# Highlight the selected button dynamically
+st.markdown(
+    f"""
+    <script>
+        var buttons = window.parent.document.querySelectorAll('.stButton button');
+        buttons.forEach(button => {{
+            if (button.innerText === "{st.session_state.selected_button}") {{
+                button.style.backgroundColor = "#4CAF50";  // Green highlight
+                button.style.fontWeight = "bold";
+            }}
+        }});
+    </script>
+    """,
+    unsafe_allow_html=True
+)
 
-
-# Display selected visualization
-st.subheader(f"Selected View: {st.session_state.graph_selection}")
+# Display the selected visualization
+st.write(f"### Selected View: {st.session_state.selected_button}")
 
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
