@@ -99,10 +99,10 @@ st.markdown("""
             text-align: center;
         }
         .button-container button:hover {
-            background-color: #ff5733;
+            background-color: #fc6c64;
         }
         .selected-button {
-            background-color: #68ff33;
+            background-color: #ff5733;
         }
     </style>
 """, unsafe_allow_html=True)
