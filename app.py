@@ -162,7 +162,7 @@ st.markdown(
             background-color: #ff5733;
         }
         div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
-            background-color: #4CAF50 !important;  /* Green highlight */
+            background-color: #ff5733 !important;
             font-weight: bold;
         }
     </style>
