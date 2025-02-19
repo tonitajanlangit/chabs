@@ -107,15 +107,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-import streamlit as st
-
 # Sidebar navigation
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
 
     st.subheader("Select Visualization")
-    
+
     event_buttons = [
         "Event Performance Overview",
         "Category Analysis",
@@ -126,13 +124,19 @@ with st.sidebar:
         "Word Cloud"
     ]
 
-    # Use radio buttons instead of separate buttons for persistent state
+    # Use radio buttons with label_visibility hidden
     selected_button = st.radio("Choose Analysis", event_buttons, index=0, label_visibility="collapsed")
 
-# Apply styles for the selected button
+# Apply styles for the selected button, and hide default radio circles
 st.markdown(
     """
     <style>
+        /* Hide radio button circle */
+        div[role="radiogroup"] div[data-testid="stRadio"] label span {
+            display: none;
+        }
+
+        /* Style the buttons */
         div[role="radiogroup"] label {
             display: block;
             width: 100%;
