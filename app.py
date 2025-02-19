@@ -102,7 +102,7 @@ st.markdown("""
             background-color: #ff5733;
         }
         .selected-button {
-            background-color: #ff5733 !important;
+            background-color: #ff5733;
         }
     </style>
 """, unsafe_allow_html=True)
