@@ -137,37 +137,32 @@ with st.sidebar:
     # Update session state when selection changes
     st.session_state.graph_selection = selected_button
 
-# Apply CSS to fully hide radio buttons and style labels as buttons
+# Apply CSS to completely hide radio buttons and turn labels into buttons
 st.markdown(
     """
     <style>
-        /* Hide radio button circles */
-        div[data-testid="stRadio"] div[role="radiogroup"] > * {
-            gap: 0px !important; /* Remove spacing */
-        }
-
-        /* Hide default radio inputs */
+        /* Hide radio button inputs */
         div[data-testid="stRadio"] div[role="radiogroup"] input {
             display: none !important;
         }
 
-        /* Hide all inline elements that might show radio icons */
-        div[data-testid="stRadio"] div[role="radiogroup"] label span {
-            display: none !important;
-        }
-
-        /* Convert labels into clickable buttons */
+        # Make labels look like buttons
         div[data-testid="stRadio"] div[role="radiogroup"] label {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            background-color: #fc6c64; /* Default color */
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            width: 180px;
+            height: 40px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #fc6c64;
             color: white;
             cursor: pointer;
-            margin-bottom: 8px;
             text-align: center;
+            padding: 12px;
+            margin-bottom: 8px;
             font-weight: bold;
             border: 2px solid transparent;
             transition: all 0.3s ease;
@@ -178,13 +173,9 @@ st.markdown(
             background-color: #ff5733;
         }
 
-        /* Highlight selected button */
-        div[data-testid="stRadio"] div[role="radiogroup"] label[data-baseweb="radio"] {
-            background-color: #fc6c64; /* Default */
-        }
-
+        /* Highlight the selected button */
         div[data-testid="stRadio"] div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
-            background-color: #ff5733 !important; /* Green when selected */
+            background-color: #ff5733 !important; 
             border: 2px solid #ff5733 !important;
             font-weight: bold;
         }
