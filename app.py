@@ -65,20 +65,6 @@ def apply_custom_styles():
     )
 apply_custom_styles()
 
-def apply_custom_styles():
-    st.markdown(
-        f"""
-        <style>
-            .main {{ background-color: white; }}
-            [data-testid="stSidebar"] {{ background-color: {PRIMARY_COLOR}; }}
-            h1, h2, h3, h4, h5, h6, p, label {{ color: black !important; }}
-            div[data-testid="stMetric"] {{ background-color: {PRIMARY_COLOR}; padding: 10px; border-radius: 10px; color: white; text-align: center; }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-apply_custom_styles()
-
 st.markdown("""
     <style>
         .button-container {
@@ -93,7 +79,7 @@ st.markdown("""
             height: 40px;
             font-size: 14px;
             border-radius: 10px;
-            background-color: #fc6c64;
+            background-color: #68ff33;
             color: white;
             cursor: pointer;
             text-align: center;
@@ -141,7 +127,7 @@ st.markdown(
             padding: 10px;
             font-size: 14px;
             border-radius: 10px;
-            background-color: #fc6c64;
+            background-color: #68ff33;
             color: white;
             cursor: pointer;
         }}
