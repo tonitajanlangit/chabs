@@ -107,12 +107,15 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Sidebar navigation buttons
+import streamlit as st
+
+# Sidebar navigation
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
 
     st.subheader("Select Visualization")
+    
     event_buttons = [
         "Event Performance Overview",
         "Category Analysis",
@@ -123,66 +126,41 @@ with st.sidebar:
         "Word Cloud"
     ]
 
-    if 'graph_selection' not in st.session_state:
-        st.session_state.graph_selection = event_buttons[0]
+    # Use radio buttons instead of separate buttons for persistent state
+    selected_button = st.radio("Choose Analysis", event_buttons, index=0, label_visibility="collapsed")
 
-    for button in event_buttons:
-        if st.button(button, key=button):  # Key is crucial!
-            st.session_state.graph_selection = button
-
-# CSS for selected button highlighting
+# Apply styles for the selected button
 st.markdown(
-    f"""
+    """
     <style>
-        .stButton > button {{
+        div[role="radiogroup"] label {
+            display: block;
             width: 100%;
             padding: 10px;
             font-size: 14px;
             border-radius: 5px;
-            background-color: #fc6c64;  /* Default color */
+            background-color: #fc6c64;
             color: white;
             cursor: pointer;
-        }}
-        .stButton > button:hover {{
-            background-color: #ff5733; /* Hover color */
-        }}
-        .stButton > button[data-selected="true"] {{
-            background-color: #ff5733 !important; /* Selected color */
-        }}
+            margin-bottom: 5px;
+            text-align: center;
+            border: none;
+        }
+        div[role="radiogroup"] label:hover {
+            background-color: #ff5733;
+        }
+        div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
+            background-color: #4CAF50 !important;  /* Green highlight */
+            font-weight: bold;
+        }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# JavaScript to set the data-selected attribute
-st.markdown(
-    f"""
-    <script>
-        function updateSelectedButton() {{
-            const buttons = document.querySelectorAll('.stButton > button');
-            const targetText = "{st.session_state.graph_selection}"; // Store target text
+# Display the selected visualization
+st.write(f"### Selected View: {selected_button}")
 
-            buttons.forEach(button => {{
-                // Get the *immediate child* span's text content (important!)
-                const buttonText = button.querySelector('span').textContent; 
-
-                if (buttonText === targetText) {{
-                    button.setAttribute('data-selected', 'true');
-                }} else {{
-                    button.setAttribute('data-selected', 'false');
-                }}
-            }});
-        }}
-
-        updateSelectedButton();
-        Streamlit.events.addEventListener(Streamlit.EVENT_RENDER, updateSelectedButton);
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
-# Display selected visualization
-st.subheader(f"Selected View: {st.session_state.graph_selection}")
 
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
