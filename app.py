@@ -111,7 +111,7 @@ st.markdown("""
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
-
+    
     st.subheader("Select Visualization")
     event_buttons = [
         "Event Performance Overview",
@@ -129,49 +129,48 @@ with st.sidebar:
     
     # Create buttons with persistent selection state
     for button in event_buttons:
-        is_selected = st.session_state.graph_selection == button
-        button_style = "background-color: #ff5733 !important;" if is_selected else "background-color: #fc6c64;"
-
-        if st.button(button, key=button, help="Click to select"):
+        if st.button(button, key=button):
             st.session_state.graph_selection = button
 
-        # Apply style to highlight selected button
-        st.markdown(
-            f"""
-            <style>
-                .stButton > button#{button} {{
-                    width: 100%;
-                    padding: 10px;
-                    font-size: 14px;
-                    border-radius: 5px;
-                    {button_style}
-                    color: white;
-                    cursor: pointer;
-                }}
-                .stButton > button#{button}:hover {{
-                    background-color: #ff5733;
-                }}
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+# Apply styles to highlight selected button
+st.markdown(
+    f"""
+    <style>
+        .stButton > button {{
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #fc6c64;
+            color: white;
+            cursor: pointer;
+        }}
+        .stButton > button:hover {{
+            background-color: #ff5733;
+        }}
+        .stButton > button[selected] {{
+            background-color: #ff5733 !important;
+        }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
 
-# Apply category filter if selected
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
 
-# Process Date and Time columns
 if 'Date_&_Time' in df_popin.columns:
     df_popin['Date'] = df_popin['Date_&_Time'].str.split('T').str[0]
     df_popin['Time'] = df_popin['Date_&_Time'].str.split('T').str[1]
     df_popin.drop(columns=['Date_&_Time'], inplace=True)
 
-# Convert Date to datetime format and create Month-Year period
 df_popin['Date'] = pd.to_datetime(df_popin['Date'], errors='coerce')
 df_popin['Month-Year'] = df_popin['Date'].dt.to_period('M')
+
+
 
 #EVENT PERFORMANCE OVERVIEW HERE
 
