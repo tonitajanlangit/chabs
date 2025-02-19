@@ -109,12 +109,15 @@ st.markdown("""
 
 import streamlit as st
 
-# Sidebar navigation buttons
+import streamlit as st
+
+# Sidebar navigation
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
 
     st.subheader("Select Visualization")
+    
     event_buttons = [
         "Event Performance Overview",
         "Category Analysis",
@@ -125,20 +128,15 @@ with st.sidebar:
         "Word Cloud"
     ]
 
-    # Initialize session state if not set
-    if 'selected_button' not in st.session_state:
-        st.session_state.selected_button = event_buttons[0]  # Default selected button
+    # Use radio buttons instead of separate buttons for persistent state
+    selected_button = st.radio("Choose Analysis", event_buttons, index=0, label_visibility="collapsed")
 
-    # Generate buttons with state tracking
-    for button in event_buttons:
-        if st.button(button, key=button):
-            st.session_state.selected_button = button  # Update session state
-
-# Apply CSS for button styling
+# Apply styles for the selected button
 st.markdown(
-    f"""
+    """
     <style>
-        .stButton > button {{
+        div[role="radiogroup"] label {
+            display: block;
             width: 100%;
             padding: 10px;
             font-size: 14px;
@@ -147,37 +145,23 @@ st.markdown(
             color: white;
             cursor: pointer;
             margin-bottom: 5px;
+            text-align: center;
             border: none;
-        }}
-        .stButton > button:hover {{
+        }
+        div[role="radiogroup"] label:hover {
             background-color: #ff5733;
-        }}
-        .stButton > button:focus {{
-            outline: none;
-        }}
+        }
+        div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
+            background-color: #4CAF50 !important;  /* Green highlight */
+            font-weight: bold;
+        }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Highlight the selected button dynamically
-st.markdown(
-    f"""
-    <script>
-        var buttons = window.parent.document.querySelectorAll('.stButton button');
-        buttons.forEach(button => {{
-            if (button.innerText === "{st.session_state.selected_button}") {{
-                button.style.backgroundColor = "#4CAF50";  // Green highlight
-                button.style.fontWeight = "bold";
-            }}
-        }});
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
 # Display the selected visualization
-st.write(f"### Selected View: {st.session_state.selected_button}")
+st.write(f"### Selected View: {selected_button}")
 
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
