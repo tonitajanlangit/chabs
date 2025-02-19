@@ -29,16 +29,15 @@ st.set_page_config(
 )
 
 
-# Custom Altair color scheme
+# Custom Colors
 PRIMARY_COLOR = "#fc6c64"  # Coral Red
 WHITE = "#ffffff"  # White
-COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"] # Chart colors
-PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"] # For variation
 
 # Load PopIn dataset
 df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')
 df_popin.columns = df_popin.columns.str.replace(' ', '_')
 
+# Custom Theme for Altair
 def custom_theme():
     return {
         "config": {
@@ -51,6 +50,7 @@ def custom_theme():
 alt.themes.register('custom_theme', custom_theme)
 alt.themes.enable('custom_theme')
 
+# Apply Custom Styles
 def apply_custom_styles():
     st.markdown(
         f"""
@@ -59,55 +59,31 @@ def apply_custom_styles():
             [data-testid="stSidebar"] {{ background-color: {PRIMARY_COLOR}; }}
             h1, h2, h3, h4, h5, h6, p, label {{ color: black !important; }}
             div[data-testid="stMetric"] {{ background-color: {PRIMARY_COLOR}; padding: 10px; border-radius: 10px; color: white; text-align: center; }}
+            
+            .stButton > button {{
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+                border-radius: 5px;
+                background-color: {PRIMARY_COLOR};
+                color: white;
+                cursor: pointer;
+            }}
+            .stButton > button:hover {{
+                background-color: #ff5733;
+            }}
+            .selected-button {{
+                background-color: #68ff33 !important;
+                color: black !important;
+            }}
         </style>
         """,
         unsafe_allow_html=True
     )
+
 apply_custom_styles()
 
-def apply_custom_styles():
-    st.markdown(
-        f"""
-        <style>
-            .main {{ background-color: white; }}
-            [data-testid="stSidebar"] {{ background-color: {PRIMARY_COLOR}; }}
-            h1, h2, h3, h4, h5, h6, p, label {{ color: black !important; }}
-            div[data-testid="stMetric"] {{ background-color: {PRIMARY_COLOR}; padding: 10px; border-radius: 10px; color: white; text-align: center; }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-apply_custom_styles()
-
-st.markdown("""
-    <style>
-        .button-container {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: space-between;
-        }
-        .button-container button {
-            width: 180px;
-            height: 40px;
-            font-size: 14px;
-            border-radius: 5px;
-            background-color: #fc6c64;
-            color: white;
-            cursor: pointer;
-            text-align: center;
-        }
-        .button-container button:hover {
-            background-color: #ff5733;
-        }
-        .selected-button {
-            background-color: #68ff33;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Sidebar navigation buttons
+# Sidebar Navigation Buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
@@ -135,29 +111,23 @@ with st.sidebar:
 # Apply styles to highlight selected button
 st.markdown(
     f"""
-    <style>
-        .stButton > button {{
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 5px;
-            background-color: #fc6c64;
-            color: white;
-            cursor: pointer;
-        }}
-        .stButton > button:hover {{
-            background-color: #ff5733;
-        }}
-        .stButton > button[selected] {{
-            background-color: #ff5733 !important;
-        }}
-    </style>
+    <script>
+        var buttons = window.parent.document.querySelectorAll('.stButton > button');
+        buttons.forEach(btn => {{
+            if (btn.innerText === "{st.session_state.graph_selection}") {{
+                btn.classList.add("selected-button");
+            }} else {{
+                btn.classList.remove("selected-button");
+            }}
+        }});
+    </script>
     """,
     unsafe_allow_html=True
 )
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
+
 
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
