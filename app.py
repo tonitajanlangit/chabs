@@ -34,6 +34,7 @@ PRIMARY_COLOR = "#fc6c64"  # Coral Red
 WHITE = "#ffffff"  # White
 COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"] # Chart colors
 PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"] # For variation
+SELECTED_COLOR = "#68ff33" 
 
 # Load PopIn dataset
 df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')
@@ -132,33 +133,43 @@ with st.sidebar:
         if st.button(button, key=button):
             st.session_state.graph_selection = button
 
-# Apply styles to highlight selected button
-st.markdown(
-    f"""
-    <style>
-        .stButton > button {{
+# Create custom-styled buttons using st.markdown
+button_container = ""
+for button in event_buttons:
+    bg_color = SELECTED_COLOR if st.session_state.graph_selection == button else PRIMARY_COLOR
+    button_container += f"""
+        <button onclick="setGraphSelection('{button}')" style="
             width: 100%;
             padding: 10px;
             font-size: 14px;
             border-radius: 5px;
-            background-color: #fc6c64;
+            background-color: {bg_color};
             color: white;
             cursor: pointer;
+            border: none;
+            margin-bottom: 5px;">
+            {button}
+        </button>
+    """
+
+st.sidebar.markdown(button_container, unsafe_allow_html=True)
+
+# JavaScript to update session state
+st.sidebar.markdown(
+    f"""
+    <script>
+        function setGraphSelection(button) {{
+            window.parent.document.dispatchEvent(new CustomEvent("streamlit:setComponentValue", {{
+                detail: {{ key: "graph_selection", value: button }}
+            }}));
         }}
-        .stButton > button:hover {{
-            background-color: #ff5733;
-        }}
-        .stButton > button[selected] {{
-            background-color: #ff5733 !important;
-        }}
-    </style>
+    </script>
     """,
     unsafe_allow_html=True
 )
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
-
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
 
