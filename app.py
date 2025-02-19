@@ -148,8 +148,8 @@ st.markdown(
         .stButton > button:hover {{
             background-color: #ff5733;
         }}
-        .stButton > button[selected] {{
-            background-color: #ff5733 !important;
+        .stButton > button:selected {{
+            background-color: #ff5733;
         }}
     </style>
     """,
