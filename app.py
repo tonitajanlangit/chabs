@@ -29,6 +29,10 @@ st.set_page_config(
 )
 
 
+import pandas as pd
+import streamlit as st
+import altair as alt
+
 # Custom Altair color scheme
 PRIMARY_COLOR = "#fc6c64"  # Coral Red
 WHITE = "#ffffff"  # White
@@ -64,34 +68,6 @@ def apply_custom_styles():
         unsafe_allow_html=True
     )
 apply_custom_styles()
-
-st.markdown("""
-    <style>
-        .button-container {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: space-between;
-        }
-        .button-container button {
-            width: 180px;
-            height: 40px;
-            font-size: 14px;
-            border-radius: 10px;
-            background-color: #fc6c64;
-            color: white;
-            cursor: pointer;
-            text-align: center;
-        }
-        .button-container button:hover {
-            background-color: #ff5733;
-        }
-        .selected-button {
-            background-color: #ff5733;
-        }
-    </style>
-""", unsafe_allow_html=True)
 
 # Sidebar navigation buttons
 with st.sidebar:
@@ -144,6 +120,37 @@ st.markdown(
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
+
+# Apply custom CSS to highlight the selected button
+st.markdown(
+    f"""
+    <style>
+        .stButton > button[data-selected="true"] {{
+            background-color: #ff5733 !important;
+        }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Add a script to update the button's data-selected attribute
+st.markdown(
+    f"""
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {{
+            const buttons = document.querySelectorAll('.stButton > button');
+            buttons.forEach(button => {{
+                if (button.innerText === "{st.session_state.graph_selection}") {{
+                    button.setAttribute('data-selected', 'true');
+                }} else {{
+                    button.setAttribute('data-selected', 'false');
+                }}
+            }});
+        }});
+    </script>
+    """,
+    unsafe_allow_html=True
+)
    
 
 if event_category != "All":
