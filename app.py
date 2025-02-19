@@ -109,13 +109,12 @@ st.markdown("""
 
 import streamlit as st
 
-# Sidebar navigation
+# Sidebar navigation buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
 
     st.subheader("Select Visualization")
-
     event_buttons = [
         "Event Performance Overview",
         "Category Analysis",
@@ -126,21 +125,14 @@ with st.sidebar:
         "Word Cloud"
     ]
 
-    # Use radio buttons with label_visibility hidden
-    selected_button = st.radio("Choose Analysis", event_buttons, index=0, label_visibility="collapsed")
+    # Use a radio button instead of multiple buttons to maintain selection state
+    selected_button = st.radio("Choose Analysis", event_buttons, index=0)
 
-# Apply styles for the selected button, and hide default radio circles
+# Apply styles for the selected button
 st.markdown(
-    """
+    f"""
     <style>
-        /* Hide radio button circle */
-        div[role="radiogroup"] div[data-testid="stRadio"] label span {
-            display: none;
-        }
-
-        /* Style the buttons */
-        div[role="radiogroup"] label {
-            display: block;
+        div[role="radiogroup"] label div {{
             width: 100%;
             padding: 10px;
             font-size: 14px;
@@ -149,23 +141,21 @@ st.markdown(
             color: white;
             cursor: pointer;
             margin-bottom: 5px;
-            text-align: center;
-            border: none;
-        }
-        div[role="radiogroup"] label:hover {
+        }}
+        div[role="radiogroup"] label div:hover {{
             background-color: #ff5733;
-        }
-        div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
+        }}
+        div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) div {{
             background-color: #4CAF50 !important;  /* Green highlight */
             font-weight: bold;
-        }
+        }}
     </style>
     """,
     unsafe_allow_html=True
 )
 
 # Display the selected visualization
-st.write(f"### Selected View: {selected_button}")
+st.write(f"### You selected: {selected_button}")
 
 
 if event_category != "All":
