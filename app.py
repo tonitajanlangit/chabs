@@ -28,11 +28,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
-import pandas as pd
-import streamlit as st
-import altair as alt
-
 # Custom Altair color scheme
 PRIMARY_COLOR = "#fc6c64"  # Coral Red
 WHITE = "#ffffff"  # White
