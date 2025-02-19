@@ -150,6 +150,7 @@ st.markdown(
         div[data-testid="stRadio"] div[role="radiogroup"] label {
             display: block;
             width: 100%;
+            height: 50px;
             padding: 12px;
             font-size: 16px;
             border-radius: 8px;
