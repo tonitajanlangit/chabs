@@ -127,7 +127,7 @@ st.markdown(
             padding: 10px;
             font-size: 14px;
             border-radius: 10px;
-            background-color: #68ff33;
+            background-color: #fc6c64;
             color: white;
             cursor: pointer;
         }}
