@@ -9,4 +9,3 @@ geopy
 plotly
 nltk
 googlemaps
-folium.plugins
