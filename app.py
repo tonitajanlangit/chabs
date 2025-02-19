@@ -111,7 +111,7 @@ st.markdown("""
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
-    
+
     st.subheader("Select Visualization")
     event_buttons = [
         "Event Performance Overview",
@@ -122,17 +122,15 @@ with st.sidebar:
         "Event Location Insights",
         "Word Cloud"
     ]
-    
-    # Initialize session state for button selection
+
     if 'graph_selection' not in st.session_state:
         st.session_state.graph_selection = event_buttons[0]
-    
-    # Create buttons with persistent selection state
+
     for button in event_buttons:
-        if st.button(button, key=button):
+        if st.button(button, key=button):  # Key is crucial!
             st.session_state.graph_selection = button
 
-# Apply styles to highlight selected button
+# CSS for selected button highlighting
 st.markdown(
     f"""
     <style>
@@ -141,20 +139,46 @@ st.markdown(
             padding: 10px;
             font-size: 14px;
             border-radius: 5px;
-            background-color: #fc6c64;
+            background-color: #fc6c64;  /* Default color */
             color: white;
             cursor: pointer;
         }}
         .stButton > button:hover {{
-            background-color: #ff5733;
+            background-color: #ff5733; /* Hover color */
         }}
-        .stButton > button[selected] {{
-            background-color: #ff5733 !important;
+        .stButton > button[data-selected="true"] {{
+            background-color: #ff5733 !important; /* Selected color */
         }}
     </style>
     """,
     unsafe_allow_html=True
 )
+
+# JavaScript to set the data-selected attribute
+st.markdown(
+    f"""
+    <script>
+        function updateSelectedButton() {{
+            const buttons = document.querySelectorAll('.stButton > button');
+            buttons.forEach(button => {{
+                if (button.innerText === "{st.session_state.graph_selection}") {{
+                    button.setAttribute('data-selected', 'true');
+                }} else {{
+                    button.setAttribute('data-selected', 'false');
+                }}
+            }});
+        }}
+
+        // Initial call to set the correct state on load
+        updateSelectedButton();
+
+        // Call after every Streamlit render (essential!)
+        Streamlit.events.addEventListener(Streamlit.EVENT_RENDER, updateSelectedButton);
+    </script>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Display selected visualization
 st.subheader(f"Selected View: {st.session_state.graph_selection}")
