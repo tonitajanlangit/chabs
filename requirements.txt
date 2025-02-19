@@ -9,3 +9,4 @@ geopy
 plotly
 nltk
 googlemaps
+wordcloud
