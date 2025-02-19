@@ -153,7 +153,7 @@ st.markdown(
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
-            text-align: center;
+            text-align: left;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
