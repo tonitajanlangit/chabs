@@ -146,10 +146,10 @@ st.markdown(
 
         /* Style the labels to look like buttons */
         div[role="radiogroup"] label {
-            width: 200px;
+            width: 100%;
             height: 50px;
             font-size: 14px;
-            border-radius: 15px;
+            border-radius: 5px;
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
