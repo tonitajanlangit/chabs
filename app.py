@@ -141,9 +141,11 @@ with st.sidebar:
 st.markdown(
     """
     <style>
-        /* Hide radio button inputs */
+        /* Match radio button color to the sidebar background */
         div[data-testid="stRadio"] div[role="radiogroup"] input {
-            display: none !important;
+            background-color: #fc6c64 !important; /* Match sidebar color */
+            border: none !important;
+            outline: none !important;
         }
 
         # Make labels look like buttons
