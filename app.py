@@ -28,11 +28,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+import pandas as pd
+import streamlit as st
+import altair as alt
+
 # Custom Altair color scheme
 PRIMARY_COLOR = "#fc6c64"  # Coral Red
 WHITE = "#ffffff"  # White
-COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"] # Chart colors
-PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"] # For variation
+COLORS = ["#3aafa9", "#fc6c64", "#f4d03f"]  # Chart colors
+PASTEL = ["#ff9999", "#dda0dd", "#20b2aa"]  # For variation
 
 # Load PopIn dataset
 df_popin = pd.read_csv('MeetUp_PopIn_Events.csv')
@@ -62,13 +66,14 @@ def apply_custom_styles():
         """,
         unsafe_allow_html=True
     )
+
 apply_custom_styles()
 
 # Sidebar navigation buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
-    
+
     st.subheader("Select Visualization")
     event_buttons = [
         "Event Performance Overview",
@@ -79,17 +84,17 @@ with st.sidebar:
         "Event Location Insights",
         "Word Cloud"
     ]
-    
+
     # Initialize session state for button selection
     if 'graph_selection' not in st.session_state:
         st.session_state.graph_selection = event_buttons[0]
-    
+
     # Create buttons with persistent selection state
     for button in event_buttons:
         if st.button(button, key=button):
             st.session_state.graph_selection = button
 
-# Apply styles to highlight selected button
+# Apply custom CSS to highlight the selected button
 st.markdown(
     f"""
     <style>
@@ -101,25 +106,11 @@ st.markdown(
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
+            transition: background-color 0.3s;
         }}
         .stButton > button:hover {{
             background-color: #ff5733;
         }}
-        .stButton > button[selected] {{
-            background-color: #ff5733 !important;
-        }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Display selected visualization
-st.subheader(f"Selected View: {st.session_state.graph_selection}")
-
-# Apply custom CSS to highlight the selected button
-st.markdown(
-    f"""
-    <style>
         .stButton > button[data-selected="true"] {{
             background-color: #ff5733 !important;
         }}
@@ -146,6 +137,10 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# Display selected visualization
+st.subheader(f"Selected View: {st.session_state.graph_selection}")
+
    
 
 if event_category != "All":
