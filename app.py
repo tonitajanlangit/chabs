@@ -108,8 +108,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-import streamlit as st
-
 # Initialize session state if not set
 if "graph_selection" not in st.session_state:
     st.session_state.graph_selection = "Event Performance Overview"  # Default selection
@@ -149,7 +147,7 @@ st.markdown(
         /* Style the labels to look like buttons */
         div[role="radiogroup"] label {
             display: block;
-            width: 100%;
+            width: 180px;
             padding: 12px;
             font-size: 16px;
             border-radius: 8px;
@@ -171,7 +169,7 @@ st.markdown(
         /* Highlight the selected button */
         div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) {
             background-color: #ff5733 !important;
-            border: 2px solid #388E3C !important;
+            border: 2px solid #ff5733 !important;
             font-weight: bold;
         }
     </style>
