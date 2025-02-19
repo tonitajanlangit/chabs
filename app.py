@@ -149,6 +149,10 @@ st.markdown(
         # Make labels look like buttons
         div[data-testid="stRadio"] div[role="radiogroup"] label {
             display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
             width: 100%;
             height: 50px;
             padding: 12px;
