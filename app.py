@@ -146,19 +146,14 @@ st.markdown(
 
         /* Style the labels to look like buttons */
         div[role="radiogroup"] label {
-            display: block;
             width: 180px;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            background-color: #fc6c64; /* Default color */
+            height: 40px;
+            font-size: 14px;
+            border-radius: 5px;
+            background-color: #fc6c64;
             color: white;
             cursor: pointer;
-            margin-bottom: 8px;
             text-align: center;
-            font-weight: bold;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
         }
 
         /* Hover effect */
