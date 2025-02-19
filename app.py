@@ -107,13 +107,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-import streamlit as st
-
 # Sidebar navigation buttons
 with st.sidebar:
     st.title('PopIn Data Analysis Filters')
     event_category = st.selectbox("Select Category", ["All", "Business", "Entertainment", "Other"])
-
+    
     st.subheader("Select Visualization")
     event_buttons = [
         "Event Performance Overview",
@@ -124,15 +122,21 @@ with st.sidebar:
         "Event Location Insights",
         "Word Cloud"
     ]
+    
+    # Initialize session state for button selection
+    if 'graph_selection' not in st.session_state:
+        st.session_state.graph_selection = event_buttons[0]
+    
+    # Create buttons with persistent selection state
+    for button in event_buttons:
+        if st.button(button, key=button):
+            st.session_state.graph_selection = button
 
-    # Use a radio button instead of multiple buttons to maintain selection state
-    selected_button = st.radio("Choose Analysis", event_buttons, index=0)
-
-# Apply styles for the selected button
+# Apply styles to highlight selected button
 st.markdown(
     f"""
     <style>
-        div[role="radiogroup"] label div {{
+        .stButton > button {{
             width: 100%;
             padding: 10px;
             font-size: 14px;
@@ -140,23 +144,20 @@ st.markdown(
             background-color: #fc6c64;
             color: white;
             cursor: pointer;
-            margin-bottom: 5px;
         }}
-        div[role="radiogroup"] label div:hover {{
+        .stButton > button:hover {{
             background-color: #ff5733;
         }}
-        div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked) div {{
-            background-color: #4CAF50 !important;  /* Green highlight */
-            font-weight: bold;
+        .stButton > button[selected] {{
+            background-color: #ff5733 !important;
         }}
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Display the selected visualization
-st.write(f"### You selected: {selected_button}")
-
+# Display selected visualization
+st.subheader(f"Selected View: {st.session_state.graph_selection}")
 
 if event_category != "All":
     df_popin = df_popin[df_popin['Category'] == event_category]
@@ -168,7 +169,6 @@ if 'Date_&_Time' in df_popin.columns:
 
 df_popin['Date'] = pd.to_datetime(df_popin['Date'], errors='coerce')
 df_popin['Month-Year'] = df_popin['Date'].dt.to_period('M')
-
 
 
 #EVENT PERFORMANCE OVERVIEW HERE
