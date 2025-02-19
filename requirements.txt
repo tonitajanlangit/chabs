@@ -1,0 +1,15 @@
+streamlit
+streamlit-folium
+pandas
+altair
+matplotlib
+ipyleaflet
+folium
+geopy
+plotly
+nltk
+wordcloud
+string
+googlemaps
+time
+folium.plugins
