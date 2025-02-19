@@ -8,7 +8,6 @@ folium
 geopy
 plotly
 nltk
-wordcloud
 string
 googlemaps
 time
