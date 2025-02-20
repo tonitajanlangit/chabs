@@ -167,8 +167,8 @@ df_popin['Month-Year'] = df_popin['Date'].dt.to_period('M')
 #-------1 Will be used for the Day of the Week 1----------#
 
 # Convert 'Date & Time' to datetime format with timezone awareness
-df_popin['Date_&Time1'] = pd.to_datetime(df_popin['Date&_Time'], format='%Y-%m-%dT%H:%M:%S%z', errors='coerce')
-df_popin['Date_&Time2'] = pd.to_datetime(df_popin['Date&_Time1'], format='%Y-%m-%dT%H:%M:%S%z', errors='coerce')
+df_popin['Date_&_Time1'] = pd.to_datetime(df_popin['Date_&_Time'], format='%Y-%m-%dT%H:%M:%S%z', errors='coerce')
+df_popin['Date_&_Time2'] = pd.to_datetime(df_popin['Date_&_Time1'], format='%Y-%m-%dT%H:%M:%S%z', errors='coerce')
 # Check if conversion was successful
 print(df_popin.dtypes)  # This should show 'Date & Time' as datetime64[ns, UTC] or datetime64[ns, tz]
 
