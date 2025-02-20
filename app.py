@@ -34,7 +34,7 @@ nltk.download('stopwords')
 # ----------------- STREAMLIT PAGE CONFIG & CUSTOM STYLES ----------------- #
 st.set_page_config(
     page_title="PopIn Data Analysis Dashboard",
-    page_icon="ð®",
+    page_icon="🎮",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -213,7 +213,7 @@ df_popin['Location'] = df_popin['Location'].apply(replace_virtual_online)
 ### ---  GEOCODING (Convert Location to Latitude & Longitude) --- ###
 
 # Initialize Google Maps API (Replace with a real API key)
-API_KEY = "AIzaSyA8UE2ZX_Gqc1ier_lx029QCah7_JUne9M"  # ð´ Replace this with your actual API key!
+API_KEY = "AIzaSyA8UE2ZX_Gqc1ier_lx029QCah7_JUne9M"  #  Replace this with your actual API key!
 gmaps = googlemaps.Client(key=API_KEY)
 
 # Function to get latitude and longitude from an address
@@ -288,7 +288,7 @@ df_popin["Event_Topic"] = df_popin["Event_Name"].apply(topic) #change from Event
 # ----------------- DISPLAY VISUALIZATIONS BASED ON BUTTON SELECTION ----------------- #
 # ----------------- EVENT PERFORMANCE OVERVIEW ----------------- #
 if st.session_state.graph_selection == "Event Performance Overview":
-    st.subheader("ð Event Performance Overview")
+    st.subheader("📊 Event Performance Overview")
 
     # Display Total Events & Total Attendees as Metrics
     total_events = len(df_popin)
@@ -296,16 +296,16 @@ if st.session_state.graph_selection == "Event Performance Overview":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.metric(label="ð Total Events", value=total_events)
+        st.metric(label="🏆 Total Events", value=total_events)
     with col2:
-        st.metric(label="ð¥ Total Attendees", value=total_attendees)
+        st.metric(label="👥 Total Attendees", value=total_attendees)
 
     # Create two columns: Bar Chart (3/4 width) and Donut Chart (1/4 width)
     col3, col4 = st.columns([3, 1])
 
     with col3:
         # Visual 2: Average Attendance Per Event Category
-        st.subheader("ð Average Attendance Per Event Category")
+        st.subheader("📈 Average Attendance Per Event Category")
         if not df_popin.empty:
             average_attendance = df_popin.groupby('Category')['Attendees'].mean().reset_index()
             average_attendance.columns = ['Category', 'Average Attendance']
@@ -336,7 +336,7 @@ if st.session_state.graph_selection == "Event Performance Overview":
 
     with col4:
         # Visual 3: Donut Chart - Online vs In-Person
-        st.subheader("ð Online vs. In-Person Events")
+        st.subheader("📍 Online vs. In-Person Events")
 
         # Define location type
         df_popin["Location Type"] = df_popin["Location"].apply(lambda x: "Online" if x.lower() == "online" else "In-Person")
@@ -366,7 +366,7 @@ if st.session_state.graph_selection == "Event Performance Overview":
             width=400,
             height=400,
             title=alt.TitleParams(
-                text="ð Event Distribution(%): Online vs In-Person",
+                text="📊 Event Distribution(%): Online vs In-Person",
                 fontSize=12,
                 fontWeight="bold",
                 anchor="middle",
@@ -383,14 +383,14 @@ if st.session_state.graph_selection == "Event Performance Overview":
 
 # ----------------- CATEGORY ANALYSIS ----------------- #
 elif st.session_state.graph_selection == "Category Analysis":
-    st.subheader("ð Category Analysis")
+    st.subheader("📊 Category Analysis")
 
     if not df_popin.empty:
         col1, col2 = st.columns(2)
 
         with col1:
             # --- Event Count by Category (Bar Chart) ---
-            st.subheader("ð­ Event Count by Category")
+            st.subheader("🎭­ Event Count by Category")
             event_count = df_popin['Category'].value_counts().reset_index()
             event_count.columns = ['Category', 'Count']
 
@@ -405,7 +405,7 @@ elif st.session_state.graph_selection == "Category Analysis":
 
         with col2:
             # --- Total Attendees by Category (Bar Chart) ---
-            st.subheader("ð Total Attendees by Category")
+            st.subheader("📈 Total Attendees by Category")
             total_attendance = df_popin.groupby('Category')['Attendees'].sum().reset_index()
             total_attendance.columns = ['Category', 'Total Attendees']
 
@@ -419,12 +419,12 @@ elif st.session_state.graph_selection == "Category Analysis":
             st.altair_chart(total_attendance_chart, use_container_width=True)
 
     # ----------------- TOPIC DISTRIBUTION PER CATEGORY ----------------- #
-    st.subheader("ð Topic Distribution by Category")
+    st.subheader("📊 Topic Distribution by Category")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.subheader("ð Business Events")
+        st.subheader("📊 Business Events")
         df_business = df_popin[df_popin["Category"] == "Business"]
 
         if df_business.empty:
@@ -444,7 +444,7 @@ elif st.session_state.graph_selection == "Category Analysis":
             st.plotly_chart(fig_business, use_container_width=True)
 
     with col2:
-        st.subheader("ð Entertainment Events")
+        st.subheader("📊 Entertainment Events")
         df_entertainment = df_popin[df_popin["Category"] == "Entertainment"]
 
         if df_entertainment.empty:
@@ -464,7 +464,7 @@ elif st.session_state.graph_selection == "Category Analysis":
             st.plotly_chart(fig_entertainment, use_container_width=True)
 
     with col3:
-        st.subheader("ð Other Events")
+        st.subheader("📊 Other Events")
         df_other2 = df_popin[df_popin["Category"] == "Other"]
 
         if df_other2.empty:
@@ -484,7 +484,7 @@ elif st.session_state.graph_selection == "Category Analysis":
             st.plotly_chart(fig_other, use_container_width=True)
     
     # ---  Most Common Words in 'Other' Events ------#
-    st.subheader("ð Common Words in Other Topics")
+    st.subheader("📋 Common Words in Other Topics")
 
     df_others = df_popin[df_popin["Event_Topic"] == "Other"].copy()
     if df_others.empty:
@@ -501,7 +501,7 @@ elif st.session_state.graph_selection == "Category Analysis":
 
 # ----------------- EVENT POPULARITY ----------------- #
 elif st.session_state.graph_selection == "Event Popularity":
-    st.subheader("â­ Event Popularity Insights")
+    st.subheader("⭐ Event Popularity Insights")
 
     # Define Event_Type
     df_popin['Event_Type'] = df_popin['Location'].apply(lambda x: 'Online' if 'Online' in str(x) else 'In-Person')    
@@ -515,7 +515,7 @@ elif st.session_state.graph_selection == "Event Popularity":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("ð Top 10 Most Attended In-Person")
+        st.subheader("🏆 Top 10 Most Attended In-Person")
         st.dataframe(top_in_person.rename(columns={
             "Event_Name": "Event",
             "Attendees": "Total Attendees",
@@ -523,7 +523,7 @@ elif st.session_state.graph_selection == "Event Popularity":
         })[['Event', 'Total Attendees', 'Category']])
 
     with col2:
-        st.subheader("ð Top 10 Most Attended Online")
+        st.subheader("🏆 Top 10 Most Attended Online")
         st.dataframe(top_online.rename(columns={
             "Event_Name": "Event",
             "Attendees": "Total Attendees",
@@ -534,7 +534,7 @@ elif st.session_state.graph_selection == "Event Popularity":
 
     with col3:
         # --- Most Common Words in Online Events ---
-        st.subheader("â Common Words in Online Event Name")
+        st.subheader("☁ Common Words in Online Event Name")
 
         if top_online.empty:
             st.warning("No online events found.")
@@ -551,7 +551,7 @@ elif st.session_state.graph_selection == "Event Popularity":
 
     with col4:
         # --- Most Common Words in In-Person Events ---
-        st.subheader("â Common Words in In-Person Event Name")
+        st.subheader("☁ Common Words in In-Person Event Name")
 
         if top_in_person.empty:
             st.warning("No in-person events found.")
@@ -569,7 +569,7 @@ elif st.session_state.graph_selection == "Event Popularity":
     col5, col6 = st.columns(2)
 
     with col5:
-        st.subheader("ð Top 10 Least Attended In-Person")
+        st.subheader("📉 Top 10 Least Attended In-Person")
         st.dataframe(least_in_person.rename(columns={
             "Event_Name": "Event",
             "Attendees": "Total Attendees",
@@ -577,7 +577,7 @@ elif st.session_state.graph_selection == "Event Popularity":
         })[['Event', 'Total Attendees', 'Category']])
 
     with col6:
-        st.subheader("ð Top 10 Least Attended Online")
+        st.subheader("📉 Top 10 Least Attended Online")
         st.dataframe(least_online.rename(columns={
             "Event_Name": "Event",
             "Attendees": "Total Attendees",
@@ -589,7 +589,7 @@ elif st.session_state.graph_selection == "Event Popularity":
 
 # ----------------- EVENT POPULARITY ----------------- #
 elif st.session_state.graph_selection == "Event Popularity":
-    st.subheader("â­ Event Popularity Insights")
+    st.subheader("⭐ Event Popularity Insights")
 
     # Define Event_Type
     df_popin['Event_Type'] = df_popin['Location'].apply(lambda x: 'Online' if 'Online' in str(x) else 'In-Person')    
@@ -603,7 +603,7 @@ elif st.session_state.graph_selection == "Event Popularity":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("ð Top 10 Most Attended In-Person")
+        st.subheader("🏆 Top 10 Most Attended In-Person")
         st.dataframe(top_in_person.rename(columns={
             "Event_Name": "Event Name",
             "Category": "Category",
@@ -611,7 +611,7 @@ elif st.session_state.graph_selection == "Event Popularity":
         }))
 
     with col2:
-        st.subheader("ð Top 10 Most Attended Online")
+        st.subheader("🏆 Top 10 Most Attended Online")
         st.dataframe(top_online.rename(columns={
             "Event_Name": "Event Name",
             "Category": "Category",
@@ -622,7 +622,7 @@ elif st.session_state.graph_selection == "Event Popularity":
 
     with col3:
         # --- Most Common Words in Online Events ---
-        st.subheader("â Common Words in Online Event Name")
+        st.subheader("☁ Common Words in Online Event Name")
 
         df_online = df_popin[df_popin["Event_Type"] == "Online"]
         if df_online.empty:
@@ -640,7 +640,7 @@ elif st.session_state.graph_selection == "Event Popularity":
 
     with col4:
         # --- Most Common Words in In-Person Events ---
-        st.subheader("â Common Words in In-Person Event Name")
+        st.subheader("☁ Common Words in In-Person Event Name")
 
         df_in_person = df_popin[df_popin["Event_Type"] == "In-Person"]
         if df_in_person.empty:
@@ -659,7 +659,7 @@ elif st.session_state.graph_selection == "Event Popularity":
     col5, col6 = st.columns(2)
 
     with col5:
-        st.subheader("ð Top 10 Least Attended In-Person")
+        st.subheader("📉 Top 10 Least Attended In-Person")
         st.dataframe(least_in_person.rename(columns={
             "Event_Name": "Event Name",
             "Category": "Category",
@@ -667,7 +667,7 @@ elif st.session_state.graph_selection == "Event Popularity":
         }))
 
     with col6:
-        st.subheader("ð Top 10 Least Attended Online")
+        st.subheader("📉 Top 10 Least Attended Online")
         st.dataframe(least_online.rename(columns={
             "Event_Name": "Event Name",
             "Category": "Category",
@@ -677,7 +677,7 @@ elif st.session_state.graph_selection == "Event Popularity":
 
 # ----------------- EVENT TRENDS OVER TIME ----------------- #
 elif st.session_state.graph_selection == "Event Trends Over Time":
-    st.subheader("ð Event Trends Over Time")
+    st.subheader("📈 Event Trends Over Time")
 
     # Work with a copy to avoid affecting other sections
     df_events_trends = df_popin.copy()
@@ -708,10 +708,10 @@ elif st.session_state.graph_selection == "Event Trends Over Time":
     attendees_by_day_category = attendees_by_day_category.sort_values("Event Day")
 
     # STREAMLIT DASHBOARD
-    st.title("ð Attendees: Day of the Week vs Categories")
+    st.title("📊 Attendees: Day of the Week vs Categories")
 
     # Bar Chart 
-    st.subheader("ð Bar Chart: Attendees by Day and Category")
+    st.subheader("📊 Bar Chart: Attendees by Day and Category")
     bar_chart = alt.Chart(attendees_by_day_category).mark_bar().encode(
         x=alt.X("Event Day:N", title="Day of the Week", sort=day_order),
         y=alt.Y("Attendees:Q", title="Total Attendees"),
@@ -733,10 +733,10 @@ elif st.session_state.graph_selection == "Event Trends Over Time":
     events_by_day_category = events_by_day_category.sort_values("Event Day")
 
     # STREAMLIT DASHBOARD
-    st.title("ð Number of Events: Day of the Week vs Categories")
+    st.title("📊 Number of Events: Day of the Week vs Categories")
 
     # Line Chart for Number of Events
-    st.subheader("ð Number of Events Over Days of the Week by Category")
+    st.subheader("📈 Number of Events Over Days of the Week by Category")
     events_line_chart = alt.Chart(events_by_day_category).mark_line(point=True).encode(
         x=alt.X("Event Day:N", title="Day of the Week", sort=day_order),
         y=alt.Y("Event Count:Q", title="Number of Events"),
@@ -798,13 +798,13 @@ elif st.session_state.graph_selection == "Event Trends Over Time":
     })
 
     # STREAMLIT DASHBOARD
-    st.subheader("ð Best Day(s) for Each Category (Attendance & Events)")
+    st.subheader("🏆 Best Day(s) for Each Category (Attendance & Events)")
     st.dataframe(best_day_table.rename(columns={
         "Event Day_Attendees": "Best Day (Attendees)", "Attendees_Attendees": "Number of Attendees",
         "Event Day_Events": "Best Day (Events)", "Event Count_Events": "Number of Events"
     }))
 
-    st.subheader("ð Worst Day(s) for Each Category (Attendance & Events)")
+    st.subheader("📉 Worst Day(s) for Each Category (Attendance & Events)")
     st.dataframe(worst_day_table.rename(columns={
         "Event Day_Attendees": "Worst Day (Attendees)", "Attendees_Attendees": "Number of Attendees",
         "Event Day_Events": "Worst Day (Events)", "Event Count_Events": "Number of Events"
@@ -816,8 +816,8 @@ elif st.session_state.graph_selection == "Event Trends Over Time":
 
 # ----------------- HOST ANALYSIS ----------------- #
 if st.session_state.graph_selection == "Host Analysis":
-    st.subheader("ð¤ Host Analysis")
-    st.subheader("ð Top Event Hosts")
+    st.subheader("👤 Host Analysis")
+    st.subheader("📊 Top Event Hosts")
 
     # Create a copy of the dataset for Host Analysis ONLY
     df_host_analysis = df_popin.copy()
@@ -913,7 +913,7 @@ if st.session_state.graph_selection == "Host Analysis":
 
 # ----------------- EVENT LOCATION INSIGHTS ----------------- #
 if st.session_state.graph_selection == "Event Location Insights":
-    st.subheader("ð Interactive Map of Events by Category")
+    st.subheader("📍 Interactive Map of Events by Category")
 
     # Filter out only rows with latitude and longitude
     df_map = df_popin.dropna(subset=['latitude', 'longitude']).copy()
@@ -925,20 +925,20 @@ if st.session_state.graph_selection == "Event Location Insights":
         "Other": "orange"
     }
 
-    # ð Create a Folium map centered on the mean location
+    # 🌍 Create a Folium map centered on the mean location
     map_center = [df_map["latitude"].mean(), df_map["longitude"].mean()]
     event_map = folium.Map(location=map_center, zoom_start=10)
 
-    # â Add event markers by category
+    # ✅ Add event markers by category
     for _, row in df_map.iterrows():
         category = row.get("Category", "Other")  # Default to "Other" if missing
         icon_color = category_colors.get(category, "gray")
         
         popup_html = f"""
             <b>{row['Event_Name']}</b><br>
-            ð <b>Location:</b> {row['Location']}<br>
-            ð·ï¸ <b>Category:</b> {category}<br>
-            ð¥ <b>Attendees:</b> {row.get('Attendees', 'N/A')}
+            📍 <b>Location:</b> {row['Location']}<br>
+            🏷️ <b>Category:</b> {category}<br>
+            👥 <b>Attendees:</b> {row.get('Attendees', 'N/A')}
         """
         
         folium.Marker(
@@ -948,7 +948,7 @@ if st.session_state.graph_selection == "Event Location Insights":
             icon=folium.Icon(color=icon_color, icon="info-sign")
         ).add_to(event_map)
 
-    # ð Centered Layout with Equal Padding
+    # 🌟 Centered Layout with Equal Padding
     centered_style = """
     <style>
         .streamlit-container {
@@ -965,7 +965,7 @@ if st.session_state.graph_selection == "Event Location Insights":
     """
     st.markdown(centered_style, unsafe_allow_html=True)
 
-    # ð Display the map using st.components.v1.html
+    # 🚀 Display the map using st.components.v1.html
     st.components.v1.html(event_map.repr_html(), height=800)    
     #-----------------------END OF ZEN'S CODE---------------------#
 
@@ -1063,7 +1063,7 @@ if st.session_state.graph_selection == "Event Location Insights":
     ])]
 
     # STREAMLIT DASHBOARD
-    st.title("ð Top 10 Locations: Events vs Attendees")
+    st.title("📊 Top 10 Locations: Events vs Attendees")
 
     # Display Sorted Table
     st.dataframe(final_merged_df)
@@ -1084,10 +1084,10 @@ if st.session_state.graph_selection == "Event Location Insights":
 
 # ----------------- TITLE DISTRIBUTION ----------------- #
 elif st.session_state.graph_selection == "Title Distribution":
-    st.subheader("ð£ï¸ Word Cloud Analysis")
+    st.subheader("🗣️ Word Cloud Analysis")
 
     # --- Most Common Words in All Event Titles ---
-    st.subheader("â Most Common Words in All Event Names")
+    st.subheader("☁ Most Common Words in All Event Names")
     text_data = ' '.join(df_popin['Event_Name'].dropna())
     text_data = re.sub(f"[{string.punctuation}]", "", text_data)
 
@@ -1101,7 +1101,7 @@ elif st.session_state.graph_selection == "Title Distribution":
     # ------------ Marla's Section --------------------
 
     # --- Most Common Words in 'Other' Events ---
-    st.subheader("ð Common Words in Other Topics")
+    st.subheader("📋 Common Words in Other Topics")
 
     df_others = df_popin[df_popin["Event_Topic"] == "Other"].copy()
     if df_others.empty:
@@ -1119,7 +1119,7 @@ elif st.session_state.graph_selection == "Title Distribution":
 
     with col1:
         # --- Most Common Words in Online Events ---
-        st.subheader("â Most Common Words in All Online Event Titles")
+        st.subheader("☁ Most Common Words in All Online Event Titles")
 
         df_online = df_popin[df_popin["Event_Type"] == "Online"]
         if df_online.empty:
@@ -1137,7 +1137,7 @@ elif st.session_state.graph_selection == "Title Distribution":
 
     with col2:
         # --- Most Common Words in In-Person Events ---
-        st.subheader("â Most Common Words in All In-Person Event Titles")
+        st.subheader("☁ Most Common Words in All In-Person Event Titles")
 
         df_in_person = df_popin[df_popin["Event_Type"] == "In-Person"]
         if df_in_person.empty:
